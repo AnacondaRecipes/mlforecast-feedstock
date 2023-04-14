@@ -12,17 +12,18 @@ source:
 
 build:
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
+    - python
     - pip
-    - python >=3.6
+    - wheel
+    - setuptools
   run:
     - numba
     - pandas
-    - python >=3.6
+    - python
     - scikit-learn
     - window-ops
 
