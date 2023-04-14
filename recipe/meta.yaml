@@ -12,6 +12,7 @@ source:
 
 build:
   number: 0
+  skip: true  # [py>=310 or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
@@ -30,6 +31,12 @@ requirements:
 test:
   imports:
     - mlforecast
+  
+  requires:
+    - pip
+
+  commands:
+    - pip check
 
 about:
   home: https://github.com/Nixtla/mlforecast
@@ -39,6 +46,9 @@ about:
   license_file: LICENSE
   license_family: APACHE
   summary: Scalable machine learning based time series forecasting
+  description: |
+    mlforecast is a framework to perform time series forecasting using machine learning models, 
+    with the option to scale to massive amounts of data using remote clusters.
 
 extra:
   recipe-maintainers:
