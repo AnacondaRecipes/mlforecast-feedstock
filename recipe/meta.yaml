@@ -1,33 +1,44 @@
 {% set name = "mlforecast" %}
-{% set version = "0.10.0" %}
+{% set version = "1.1.0" %}
 
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/mlforecast-{{ version }}.tar.gz
-  sha256: c65acff268b62f49bc2826a93fc4bc8615f2569c7ba35d02354cc79b7ea313f4
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 5f0baf178a4017785475db86d56d628a48cf267d5b8ea6ebef798d9ddf396bd8
 
 build:
   number: 0
-  skip: true  # [py<37 or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  skip: true  # [py<310]
 
 requirements:
   host:
     - python
     - pip
     - wheel
-    - setuptools
+    - setuptools >=61.0
   run:
     - python
-    - numba
-    - pandas
+    - cloudpickle
+    - coreforecast>=0.0.15
+    - fsspec
+    - narwhals
+    - optuna
+    - pandas <3.0
     - scikit-learn
-    - utilsforecast >=0.0.6
-    - window-ops
+    - utilsforecast>=0.2.9
+  run_constrained:
+    # dask
+    - fugue >=0.9.4
+    # ray
+    - xgboost_ray >=0.1.19  # [not win and py<314]
+    - xgboost >=2.0.0,<2.1.0  # [not win and py<314]
+    # spark
+    - pyspark >=3.3
 
 test:
   imports:
