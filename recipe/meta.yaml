@@ -11,7 +11,7 @@ source:
   sha256: 5f0baf178a4017785475db86d56d628a48cf267d5b8ea6ebef798d9ddf396bd8
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   skip: true  # [py<310]
 
@@ -34,9 +34,11 @@ requirements:
   run_constrained:
     # dask
     - fugue >=0.9.4
-    # ray
-    - xgboost_ray >=0.1.19  # [not win and py<314]
-    - xgboost >=2.0.0,<2.1.0  # [not win and py<314]
+    ## ray
+    # Omit ray-extra xgboost pin: it is not a base/runtime requirement, and as
+    # global run_constrained it blocks newer xgboost (3.x) in shared envs.
+    # - xgboost_ray >=0.1.19  # [not win and py<314]
+    # - xgboost >=2.0.0,<2.1.0  # [not win and py<314]
     # spark
     - pyspark >=3.3
 
